@@ -3,8 +3,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '@/components/Header';
 import SearchBar from '@/components/SearchBar';
 import GifDetail from '@/components/GifDetail';
-import useFetch from '@/services/useFetch';
 import { fetchRandomGif } from '@/services/api';
+import useFetch from '@/hooks/useFetch';
 
 export default function Index() {
   // TODO @mpostulka - handle loading and error states
