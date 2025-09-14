@@ -1,5 +1,5 @@
-import { User } from '@/types/User';
-import { Images } from '@/types/Images';
+import { User } from '@/interfaces/User';
+import { Images } from '@/interfaces/Images';
 
 export interface GifObject {
   type: string;

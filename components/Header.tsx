@@ -4,15 +4,11 @@ interface HeaderProps {
   title: string;
   subtitle?: string;
 }
-export default function Header({title, subtitle}: HeaderProps) {
+export default function Header({ title, subtitle }: HeaderProps) {
   return (
-    <View className="flex-1 justify-start items-center pt-12 pb-12">
-      <Text className="text-[24px] text-accent font-bold">{title}</Text>
-      {subtitle &&
-        <Text className="text-[14px] text-primary">
-          {subtitle}
-        </Text>
-      }
+    <View className="flex justify-start items-center pt-12 pb-12">
+      <Text className="text-3xl text-accent font-bold">{title}</Text>
+      {subtitle && <Text className="text-sm text-primary">{subtitle}</Text>}
     </View>
   );
 }

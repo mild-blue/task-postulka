@@ -28,10 +28,9 @@ interface WebpFields {
 }
 
 /** Common animated rendition: URL + dimensions + optional size/mp4/webp */
-export type ImageRendition =
-  & UrlField
-  & Dimensional
-  & Partial<SizeField & Mp4Fields & WebpFields>;
+export type ImageRendition = UrlField &
+  Dimensional &
+  Partial<SizeField & Mp4Fields & WebpFields>;
 
 /** Static “still” rendition: URL + dimensions */
 export type StillRendition = UrlField & Dimensional;
@@ -49,7 +48,11 @@ export interface DownsizedSmallRendition extends Dimensional {
 }
 
 /** Original: full data incl. frames + mp4/webp/size + dimensions */
-export interface OriginalRendition extends Dimensional, SizeField, Mp4Fields, WebpFields {
+export interface OriginalRendition
+  extends Dimensional,
+    SizeField,
+    Mp4Fields,
+    WebpFields {
   url?: string;
   frames?: string;
 }

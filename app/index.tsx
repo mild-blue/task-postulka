@@ -1,22 +1,35 @@
-import { Text, View, TouchableOpacity } from 'react-native';
-import { Link } from 'expo-router';
-import { useRouter } from 'expo-router';
+import { Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '@/components/Header';
 import SearchBar from '@/components/SearchBar';
 import GifDetail from '@/components/GifDetail';
+import useFetch from '@/services/useFetch';
+import { fetchRandomGif } from '@/services/api';
 
 export default function Index() {
-  const router = useRouter();
+  // TODO @mpostulka - handle loading and error states
+  const {
+    data: gif,
+    loading: gifLoading,
+    error: gifError,
+  } = useFetch(() => fetchRandomGif());
 
   return (
-    <SafeAreaView className="flex-1 bg-background-dark items-center justify-start">
+    <SafeAreaView className="flex-1 bg-background-dark justify-start items-center px-4">
       <Header
         title={'GIF Explorer'}
         subtitle={'Discover and search amazing GIFs'}
       />
-      <SearchBar title={'Search'} />
-      <GifDetail id={'123'} />
+      <View className="w-full">
+        <SearchBar />
+      </View>
+
+      <View className="flex-1 justify-center items-start w-full mt-10">
+        <Text className="color-primary text-base font-light">
+          Random selected GIF:
+        </Text>
+        {gif && <GifDetail gif={gif} />}
+      </View>
     </SafeAreaView>
   );
 }
