@@ -1,0 +1,11 @@
+node_modules
+android
+ios
+build
+
+.expo/
+
+# Editor/IDE configs
+.cursor/
+.idea/
+.vscode/
