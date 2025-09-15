@@ -1,15 +1,17 @@
 import { InteractionManager, Pressable, TextInput, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 
+// TODO @mpostulka - solve this somehow
 interface SearchProps {
   onPress?: () => void;
   autofocus?: boolean;
+  value?: string;
+  setValue?: (value: string) => void;
 }
 
-export default function SearchBar({ onPress, autofocus }: SearchProps) {
-  const [value, setValue] = useState<string>('');
+export default function SearchBar({ onPress, autofocus, value, setValue }: SearchProps) {
   const inputRef = useRef<TextInput>(null);
 
   // autofocus the text input

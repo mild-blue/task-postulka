@@ -1,4 +1,4 @@
-import { ActivityIndicator, Text, View } from 'react-native';
+import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '@/components/Header';
 import SearchBar from '@/components/SearchBar';
@@ -13,7 +13,7 @@ import { useRouter } from 'expo-router';
 export default function Index() {
   const router = useRouter();
 
-  // fetch random gif first
+  // fetch random gif
   const {
     data: gif,
     loading: gifLoading,
@@ -23,7 +23,7 @@ export default function Index() {
 
   // refetch every 10 seconds only when screen is focused, with useCallback for dependency array
   // TODO @mpostulka - re-enable this!!!
-/*  useFocusEffect(
+  /*  useFocusEffect(
     useCallback(() => {
       const id = setInterval(gifRefetch, 10_000);
       return () => clearInterval(id);
@@ -32,35 +32,35 @@ export default function Index() {
 
   return (
     <SafeAreaView className="flex-1 justify-start items-center bg-background-dark px-4">
-      <Header
-        title={'GIF Explorer'}
-        subtitle={'Discover and search amazing GIFs'}
-      />
-      <View className="w-full">
-        <SearchBar
-          onPress={() => router.push('/search')}
+      <ScrollView showsVerticalScrollIndicator={false} className="w-full">
+        <Header
+          title={'GIF Explorer'}
+          subtitle={'Discover and search amazing GIFs'}
         />
-      </View>
+        <View className="w-full">
+          <SearchBar onPress={() => router.push('/search')} />
+        </View>
 
-      <>
-        {gif && !gifLoading && !gifError ? (
-          <View className="flex-1 justify-center items-start w-full mt-10">
-            <Text className="color-primary text-base font-light">
-              Random selected GIF:
+        <>
+          {gif && !gifLoading && !gifError ? (
+            <View className="flex-1 justify-center items-start w-full mt-8">
+              <Text className="color-primary text-base font-light">
+                Random selected GIF:
+              </Text>
+              <GifDetail gif={gif} />
+            </View>
+          ) : gifLoading && !gifError ? (
+            <View className="items-center justify-center mt-16">
+              <ActivityIndicator size="large" />
+              <Text className="text-primary mt-4 opacity-70">Loading…</Text>
+            </View>
+          ) : (
+            <Text className="self-center text-primary text-2xl font-bold mt-8">
+              {gifError?.message ?? 'Error when loading random GIF.'}
             </Text>
-            <GifDetail gif={gif} />
-          </View>
-        ) : gifLoading && !gifError ? (
-          <View className="items-center justify-center mt-16">
-            <ActivityIndicator size="large" />
-            <Text className="text-primary mt-4 opacity-70">Loading…</Text>
-          </View>
-        ) : (
-          <Text className="text-primary text-2xl font-bold mt-8">
-            {gifError?.message ?? 'Error when loading random GIF.'}
-          </Text>
-        )}
-      </>
+          )}
+        </>
+      </ScrollView>
     </SafeAreaView>
   );
 }
