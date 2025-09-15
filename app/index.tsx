@@ -7,23 +7,28 @@ import { fetchRandomGif } from '@/services/api';
 import useFetch from '@/hooks/useFetch';
 import { useFocusEffect } from '@react-navigation/native';
 import { useCallback } from 'react';
+import { GifObject } from '@/interfaces/GifObject';
+import { useRouter } from 'expo-router';
 
 export default function Index() {
-  // TODO @mpostulka - handle loading and error states
+  const router = useRouter();
+
+  // fetch random gif first
   const {
     data: gif,
     loading: gifLoading,
     error: gifError,
     refetch: gifRefetch,
-  } = useFetch(() => fetchRandomGif());
+  } = useFetch((): Promise<GifObject> => fetchRandomGif());
 
-  // refetch only when screen is focused, with useCallback for dependency array
-  useFocusEffect(
+  // refetch every 10 seconds only when screen is focused, with useCallback for dependency array
+  // TODO @mpostulka - re-enable this!!!
+/*  useFocusEffect(
     useCallback(() => {
       const id = setInterval(gifRefetch, 10_000);
       return () => clearInterval(id);
     }, [gifRefetch]),
-  );
+  );*/
 
   return (
     <SafeAreaView className="flex-1 justify-start items-center bg-background-dark px-4">
@@ -32,7 +37,9 @@ export default function Index() {
         subtitle={'Discover and search amazing GIFs'}
       />
       <View className="w-full">
-        <SearchBar />
+        <SearchBar
+          onPress={() => router.push('/search')}
+        />
       </View>
 
       <>

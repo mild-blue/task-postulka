@@ -1,9 +1,14 @@
 import { Text, View, Image } from 'react-native';
+import SearchBar from '@/components/SearchBar';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Search() {
   return (
-    <View className="bg-background-dark absolute w-full h-full z-0 flex-1 justify-center items-center">
-      <Text className="text-xl text-primary">Search</Text>
-    </View>
+    <SafeAreaView className="flex-1 justify-start items-center bg-background-dark px-4">
+      <View className="w-full mt-10">
+        <SearchBar autofocus={true}
+        />
+      </View>
+    </SafeAreaView>
   );
 }
