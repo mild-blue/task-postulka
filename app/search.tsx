@@ -11,9 +11,9 @@ import ErrorText from '@/components/ErrorText';
 
 export default function Search() {
   const [query, setQuery] = useState<string>('');
-  const [isDebouncing, setIsDebouncing] = useState(false);
+  // show loading indicator while debouncing instead of error text
+  const [isDebouncing, setIsDebouncing] = useState<boolean>(false);
 
-  // TODO @mpostulka - it somehow shows error when typing
   const {
     data: gifs,
     loading: gifsLoading,
