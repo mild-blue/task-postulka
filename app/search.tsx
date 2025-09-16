@@ -3,10 +3,7 @@ import SearchBar from '@/components/SearchBar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useEffect, useState } from 'react';
 import useFetch from '@/hooks/useFetch';
-import {
-  convertGifObjectToMinimal,
-  GifObject,
-} from '@/interfaces/GifObject';
+import { convertGifObjectToMinimal, GifObject } from '@/interfaces/GifObject';
 import { fetchGifsByQuery } from '@/services/api';
 import { Link } from 'expo-router';
 import LoadingIndicator from '@/components/LoadingIndicator';
@@ -14,6 +11,7 @@ import ErrorText from '@/components/ErrorText';
 
 export default function Search() {
   const [query, setQuery] = useState<string>('');
+  const [isDebouncing, setIsDebouncing] = useState(false);
 
   // TODO @mpostulka - it somehow shows error when typing
   const {
@@ -25,15 +23,19 @@ export default function Search() {
   } = useFetch((): Promise<GifObject[]> => fetchGifsByQuery(query));
 
   useEffect(() => {
-    const timeoutId = setTimeout(async () => {
-      if (query.trim().length < 2) {
-        resetFetchGifs();
-      } else {
-        await refetchGifs();
-      }
+    if (query.trim().length < 2) {
+      resetFetchGifs();
+      setIsDebouncing(false);
+      return;
+    }
 
-      return () => clearTimeout(timeoutId);
+    setIsDebouncing(true);
+    const timeoutId = setTimeout(() => {
+      setIsDebouncing(false);
+      refetchGifs();
     }, 500);
+
+    return () => clearTimeout(timeoutId);
   }, [query]);
 
   const GifPreview = (item: GifObject) => (
@@ -93,13 +95,15 @@ export default function Search() {
           showsVerticalScrollIndicator={false}
           ListEmptyComponent={
             query.trim().length >= 2 ? (
-              !gifsLoading && !gifsLoading ? (
-                <ErrorText message={'No GIFs found'} />
-              ) : gifsLoading && !gifsError ? (
+              gifsLoading || isDebouncing ? (
                 <LoadingIndicator />
-              ) : (
-                <ErrorText message={gifsError?.message} />
-              )
+              ) : gifsError ? (
+                <ErrorText
+                  message={gifsError.message ?? 'Something went wrong'}
+                />
+              ) : gifs?.length === 0 ? (
+                <ErrorText message="No GIFs found" />
+              ) : null
             ) : null
           }
         />
