@@ -1,4 +1,4 @@
-import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '@/components/Header';
 import SearchBar from '@/components/SearchBar';
@@ -9,6 +9,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useCallback } from 'react';
 import { GifObject } from '@/interfaces/GifObject';
 import { useRouter } from 'expo-router';
+import LoadingIndicator from '@/components/LoadingIndicator';
+import ErrorText from '@/components/ErrorText';
 
 export default function Index() {
   const router = useRouter();
@@ -43,21 +45,16 @@ export default function Index() {
 
         <>
           {gif && !gifLoading && !gifError ? (
-            <View className="flex-1 justify-center items-start w-full mt-8">
+            <View className="flex-1 justify-center items-start w-full mt-4">
               <Text className="color-primary text-base font-light">
                 Random selected GIF:
               </Text>
               <GifDetail gif={gif} />
             </View>
           ) : gifLoading && !gifError ? (
-            <View className="items-center justify-center mt-16">
-              <ActivityIndicator size="large" />
-              <Text className="text-primary mt-4 opacity-70">Loading…</Text>
-            </View>
+            <LoadingIndicator />
           ) : (
-            <Text className="self-center text-primary text-2xl font-bold mt-8">
-              {gifError?.message ?? 'Error when loading random GIF.'}
-            </Text>
+            <ErrorText message={gifError?.message} />
           )}
         </>
       </ScrollView>

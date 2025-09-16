@@ -1,22 +1,19 @@
-import { Text, useWindowDimensions, View } from 'react-native';
-import { GifObject } from '@/interfaces/GifObject';
+import { Text, View } from 'react-native';
+import { GifObject, GifObjectMinimal } from '@/interfaces/GifObject';
 import { Image as ExpoImage } from 'expo-image';
+import ErrorText from '@/components/ErrorText';
 
 interface GifDetailProps {
-  gif: GifObject;
+  gif: GifObjectMinimal;
 }
 export default function GifDetail({ gif }: GifDetailProps) {
   const url = gif?.images?.original?.url;
 
   if (url == null) {
-    // TODO @mpostulka - better error message
-    return (
-      <View className="flex-1 justify-center items-center">
-        <Text className="text-primary">Problem with GIF url</Text>
-      </View>
-    );
+    return <ErrorText message={'Problem with loading GIF.'} />;
   }
 
+  // ExpoImage needs dimensions to be visible
   const gifW = Number(
     gif?.images?.original?.width ?? gif?.images?.fixed_width?.width ?? 400,
   );
@@ -47,13 +44,13 @@ export default function GifDetail({ gif }: GifDetailProps) {
             numberOfLines={1}
             ellipsizeMode="middle"
           >
-            {gif.url}
+            {url}
           </Text>
         </View>
 
         <View className="ml-3 h-16 w-16 rounded-full bg-background-light items-center justify-center">
           <Text className="text-white font-semibold">
-            {gif.rating?.toUpperCase() || ''}
+            {gif.rating?.toUpperCase() || 'N/A'}
           </Text>
         </View>
       </View>
