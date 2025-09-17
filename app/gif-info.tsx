@@ -5,18 +5,30 @@ import { router, useLocalSearchParams } from 'expo-router';
 import Header from '@/components/Header';
 import { GifObjectMinimal } from '@/interfaces/GifObject';
 import { Ionicons } from '@expo/vector-icons';
+import ErrorText from '@/components/ErrorText';
 
 export default function GifInfo() {
   const { gifInfo } = useLocalSearchParams<{ gifInfo?: string }>();
-  const data: GifObjectMinimal = gifInfo
-    ? JSON.parse(decodeURIComponent(gifInfo))
-    : null;
+
+  let data: GifObjectMinimal | null;
+  try {
+    data = gifInfo ? JSON.parse(decodeURIComponent(gifInfo)) : null;
+  } catch (e) {
+    console.log('Error parsing gifInfo:', e);
+    data = null;
+  }
+
+  if (data == null) {
+    return <ErrorText message={'Problem with loading GIF'} />;
+  }
 
   return (
     <SafeAreaView className="flex-1 justify-start items-center bg-background-dark px-4">
       <ScrollView showsVerticalScrollIndicator={false} className="w-full">
         <View className="w-full flex-row items-center mt-2 mb-2">
           <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Go back"
             onPress={() => router.back()}
             className="absolute p-2 -ml-2 mr-2"
           >

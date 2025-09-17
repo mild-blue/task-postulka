@@ -1,5 +1,5 @@
 import { Text, View } from 'react-native';
-import { GifObject, GifObjectMinimal } from '@/interfaces/GifObject';
+import { GifObjectMinimal } from '@/interfaces/GifObject';
 import { Image as ExpoImage } from 'expo-image';
 import ErrorText from '@/components/ErrorText';
 
@@ -7,7 +7,7 @@ interface GifDetailProps {
   gif: GifObjectMinimal;
 }
 export default function GifDetail({ gif }: GifDetailProps) {
-  const url = gif?.images?.original?.url;
+  const url: string | undefined = gif?.images?.original?.url;
 
   if (url == null) {
     return <ErrorText message={'Problem with loading GIF.'} />;
@@ -15,17 +15,17 @@ export default function GifDetail({ gif }: GifDetailProps) {
 
   // ExpoImage needs dimensions to be visible
   const gifW = Number(
-    gif?.images?.original?.width ?? gif?.images?.fixed_width?.width ?? 400,
+    gif.images.original?.width ?? gif?.images.fixed_width?.width ?? 400,
   );
   const gifH = Number(
-    gif?.images?.original?.height ?? gif?.images?.fixed_width?.height ?? 300,
+    gif.images.original?.height ?? gif?.images.fixed_width?.height ?? 300,
   );
   const aspect = gifW / gifH;
 
   return (
     <View className="flex-1 py-2">
       <ExpoImage
-        source={url}
+        source={{ uri: url }}
         style={{ width: '100%', aspectRatio: aspect, borderRadius: 12 }}
         autoplay
       />

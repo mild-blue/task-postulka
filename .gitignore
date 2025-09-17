@@ -46,3 +46,6 @@ app-example
 .cursor/
 .idea/
 .vscode/
+
+# Test coverage
+coverage/

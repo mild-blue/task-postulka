@@ -21,8 +21,9 @@ export const fetchRandomGif = async (): Promise<GifObject> => {
   });
 
   if (!response.ok) {
-    // @ts-ignore
-    throw new Error('Failed to fetch GIF', response.statusText);
+    throw new Error(
+      `Failed to fetch GIF: ${response.status} ${response.statusText}`,
+    );
   }
 
   const result = await response.json();
@@ -43,9 +44,7 @@ export const fetchGifsByQuery = async (query: string): Promise<GifObject[]> => {
 
   if (!response.ok) {
     throw new Error(
-      'Failed to fetch GIFs by search query',
-      // @ts-ignore
-      response.statusText,
+      `Failed to fetch GIFs by search query: ${response.status} ${response.statusText}`,
     );
   }
 

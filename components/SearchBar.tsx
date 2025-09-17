@@ -57,6 +57,8 @@ export default function SearchBar({
       />
       {value && value?.length > 0 && (
         <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Clear search"
           onPress={() => {
             if (setValue != null) {
               setValue('');
@@ -71,7 +73,12 @@ export default function SearchBar({
 
   return onPress ? (
     // for home screen - only redirects to search screen on press
-    <Pressable onPress={onPress} className="w-full flex-row items-center">
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="Open search"
+      onPress={onPress}
+      className="w-full flex-row items-center"
+    >
       {SearchInput}
     </Pressable>
   ) : (
@@ -81,6 +88,8 @@ export default function SearchBar({
       <Pressable
         onPress={() => router.navigate('/')}
         className="ml-4 h-12 justify-center"
+        accessibilityRole="button"
+        accessibilityLabel="Cancel search"
       >
         <Text className="text-primary text-xl pb-3">Cancel</Text>
       </Pressable>

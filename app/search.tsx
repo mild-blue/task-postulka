@@ -9,6 +9,37 @@ import { Link } from 'expo-router';
 import LoadingIndicator from '@/components/LoadingIndicator';
 import ErrorText from '@/components/ErrorText';
 
+function GifPreview(item: GifObject) {
+  return (
+    <Link
+      href={{
+        pathname: '/gif-info',
+        params: {
+          // do not pass the whole object, just the minimal needed info
+          gifInfo: encodeURIComponent(
+            JSON.stringify(convertGifObjectToMinimal(item)),
+          ),
+        },
+      }}
+      asChild
+    >
+      <Pressable
+        className="w-[31%]"
+        accessibilityRole="link"
+        accessibilityLabel={
+          item.title ? `Open ${item.title} GIF details` : 'Open GIF details'
+        }
+      >
+        <Image
+          source={{ uri: item.images.fixed_width_still?.url }}
+          className="w-full aspect-square rounded-xl"
+          resizeMode="cover"
+        />
+      </Pressable>
+    </Link>
+  );
+}
+
 export default function Search() {
   const [query, setQuery] = useState<string>('');
   // show loading indicator while debouncing instead of error text
@@ -37,29 +68,6 @@ export default function Search() {
 
     return () => clearTimeout(timeoutId);
   }, [query]);
-
-  const GifPreview = (item: GifObject) => (
-    <Link
-      href={{
-        pathname: '/gif-info',
-        params: {
-          // do not pass the whole object, just the minimal needed info
-          gifInfo: encodeURIComponent(
-            JSON.stringify(convertGifObjectToMinimal(item)),
-          ),
-        },
-      }}
-      asChild
-    >
-      <Pressable key={item.id} className="w-[31%]">
-        <Image
-          source={{ uri: item.images.fixed_width_still?.url }}
-          className="w-full aspect-square rounded-xl"
-          resizeMode="cover"
-        />
-      </Pressable>
-    </Link>
-  );
 
   return (
     <SafeAreaView className="flex-1 justify-start items-center bg-background-dark px-4">

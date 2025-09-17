@@ -24,13 +24,12 @@ export default function Index() {
   } = useFetch((): Promise<GifObject> => fetchRandomGif());
 
   // refetch every 10 seconds only when screen is focused, with useCallback for dependency array
-  // TODO @mpostulka - re-enable this!!!
-  /*  useFocusEffect(
+  useFocusEffect(
     useCallback(() => {
       const id = setInterval(gifRefetch, 10_000);
       return () => clearInterval(id);
     }, [gifRefetch]),
-  );*/
+  );
 
   return (
     <SafeAreaView className="flex-1 justify-start items-center bg-background-dark px-4">
@@ -43,20 +42,18 @@ export default function Index() {
           <SearchBar onPress={() => router.push('/search')} />
         </View>
 
-        <>
-          {gif && !gifLoading && !gifError ? (
-            <View className="flex-1 justify-center items-start w-full mt-4">
-              <Text className="color-primary text-base font-light">
-                Random selected GIF:
-              </Text>
-              <GifDetail gif={gif} />
-            </View>
-          ) : gifLoading && !gifError ? (
-            <LoadingIndicator />
-          ) : (
-            <ErrorText message={gifError?.message} />
-          )}
-        </>
+        {gif && !gifLoading && !gifError ? (
+          <View className="flex-1 justify-center items-start w-full mt-4">
+            <Text className="color-primary text-base font-light">
+              Random selected GIF:
+            </Text>
+            <GifDetail gif={gif} />
+          </View>
+        ) : gifLoading && !gifError ? (
+          <LoadingIndicator />
+        ) : (
+          <ErrorText message={gifError?.message} />
+        )}
       </ScrollView>
     </SafeAreaView>
   );
