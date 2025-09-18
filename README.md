@@ -1,97 +1,90 @@
-# Mild Blue Recruitment Task
+# Welcome to the GIF App 
 
-Welcome to the Mild Blue React Native programming assignment! In this document, you will find the specification for the assignment, and instructions on how to get started and hand your solution in. Please read the document carefully.
-
-# Table of Contents
-
-1. [Task Description](#task-description)
-    1. [Functional Requirements](#functional-requirements)
-    2. [Non-Functional Requirements](#non-functional-requirements)
-2. [Useful information](#useful-information)
-3. [Submission Process](#submission-process)
+## Screenshots
+The app will automatically show a random GIF on home page that will change every 10 seconds. 
+Through search bar, you can search for any GIF you want and by clicking on any GIF, you can view the detail of the GIF.
 
 
-## Task Description
+> *Author's Note:*
+> 
+> I really enjoyed working on this project with React Native and I hope you will like it too! Thanks for this opportunity. Michaela :)
 
-This is a React Native programming assignment we've created specifically for our recruitment process.
+![Final App Design](assets/images/app-design.png)
 
-### Functional Requirements
-We would like you to create a React Native application that consists of two screens covering the functionality listed below. The app should run in portrait mode on a phone. Landscape and tablet support is not required.
+## Get started
 
-![Wireframe][wireframe-image]
+1. Install dependencies
 
-#### Screen 1:
+   ```bash
+   npm install
+   ```
 
-Screen 1 has the following two functionalities:
+2. Start the app
 
-1. Displaying a random GIF:
-    - Upon opening the app, it should fetch a random GIF from the Giphy API and display it as shown in **Fig 1**.
-    - The random GIF displayed on this screen should be animated.
-    - Every 10 seconds, a new random GIF should replace the previous loaded one. This should continue as long as the user has no search results displayed.
-    - **Screen 1** should also display the GIF title, link and an age restriction badge.
-2. Search Bar:
-    - Upon clicking the search bar, we start a live search after characters have been entered. This means that once the user has typed two characters, the search API should be called and not wait until the user pressed search.
-    - The returning results should be displayed as shown in **Fig 2**. The GIFs’ in the search results do not have to be animated, and the list doesn’t have to include infinite scrolling.
-    - Tapping one of the list items should navigate the user to **Screen 2** [fig 3.].
-    - This screen should be able to retain its state, in case the user navigates back to it from **Screen 2**.
-    - On canceling the search, the screen should go back to displaying the random GIF.
+   ```bash
+   npx expo start
+   ```
 
-#### Screen 2:
+In the output, you'll find options to open the app in a
 
-Screen 2 only has the following functionality:
+- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
+- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
+- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
+- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
-1. Displaying the GIF that was tapped:
-    - On **Screen 2** the tapped GIF should be displayed animated along with the title, link and age restriction badge as displayed in **Fig 3**.
-    - Upon tapping the back button, the user should be taken back to **Screen 1**.
+Note: The app was developed with use of Expo Go app on a physical device - iPhone 13 mini.
 
+Another scripts:
+- `npm run lint` - runs linter
+- `npm run format` - formats code with Prettier
+- `npm run test` - runs unit tests
+- `npm run test:cov` - runs unit tests with coverage report
 
-### Non-Functional Requirements
+## Architecture
 
-- Do not use the GIPHY SDK. Any other third-party libraries can be used.
-- The app should be written in TypeScript
-- Create a README with the following information (please be clear and concise):
-    - A brief description of the overall app architecture and the reasoning behind picking it over any other possible alternatives.
-    - A brief explanation of third-party libraries used and the justification for their inclusion.
-    - Any design decisions or trade-offs that are worth mentioning.
+The app was developed with [Expo](https://expo.dev/) and [React Native](https://reactnative.dev/), using [TypeScript](https://www.typescriptlang.org/) as the programming language (as specified in the assignment).
 
+**Expo** was chosen, because it is the official framework for React Native and allows easy development and testing on physical devices without need of setting up simulators.
 
-#### What We Care About
+**[Tailwind](https://tailwindcss.com/) ([Nativewind](https://www.nativewind.dev/))** was used for styling, as it allows quick and responsive design.
 
-- We value clean, readable, modern, and idiomatic TypeScript. Your code will be reviewed by other developers, so make sure it is easy to follow and well-structured.
-- Don't feel the need to over-engineer your solution. It should be tailored to the problem statement. We prefer concise and simple solutions over lengthy ones. However, it should be straightforward to re-use the components and extend the app with new features.
-- At Mild Blue, we care about security, but for the purpose of this assignment, the API key can be included via an environment file or used directly in the code.
-- We use linting/formatting to ensure consistency at Mild Blue, but for this assignment linting/formatting is allowed but not required.
-- There are no specific folder structure/naming convention requirements, but they should be consistent throughout the codebase. The assignment should contain unit tests, however 100% coverage is not expected. UI/Snapshot tests are not required.
-- Thought should be given to how the code can fail and what that means for the end-user of the app. Feedback can be as simple as showing an alert or text on the screen.
-- The style of the app will not be evaluated, but it should not contain any visual bugs (such as text going off-screen).
+**[Giphy API](https://developers.giphy.com/)** was used for fetching GIFs (as mentioned in instructions). The API key is stored in `.env.development`.
 
+### App structure
+The app consists of **three screens** and **several reusable components**.
 
-### Useful information:
+I consider using the **dynamic routing** for navigation between search screen and GIF detail screen (with `app/gif/[id].tsx`). However, since the GIF data are already in the search result, I wanted to **avoid refetching**. I created `GifMinimalObject` and with that we pass through the `useLocalSearchParams` only needed information and not whole GIF object. 
 
-- API Documentation: https://developers.giphy.com/docs/
-- Use the following API Key: `PlTvthVMkqTk3ZueRiHpXa6uR1zDNanJ`
+**`Expo-image`** has to be used for displaying the animated GIF, as the standard `Image` component doesn't support animated images. I am using standard `Image` component in search results, they are not animated.
 
-### Submission Process
+One **custom hook** was created - `useFetch` for fetching data from Giphy API. It handles loading, error states and data. It can be reused for different endpoints.
 
-You were given a link to GitHub, which when you visited that link, created a private fork of this repository. Only you and developers at Mild Blue can see the code you push to this repository.
+### AI
+I tried not to used AI tools for generating blocks of code, but mainly for troubleshooting with concrete problems. I really wanted to deep dive into React Native. 
 
-High-level instructions:
+There are two exceptions:
+- I used ChatGPT to generate TypeScript type GifObject from Giphy API website
+- I used AI to help me a lot with writing unit tests based on my descriptions like "It should test that the error shows 'Unexpected error' if no message given"
 
-1. Read and follow the task specified below.
-2. Make a local clone of this repository on your machine, and do your work on a
-   branch other than `master`. Do not make any changes to the `master` branch.
-3. Push your changes as frequently as you like to `origin/your-branch-name`,
-   and create a pull request to merge your changes back into the `master`
-   branch. Don't merge your pull request. Once you're finished with the
-   assignment, we will do a code review of your pull request.
-4. When you're finished, email us that your code is ready to be
-   reviewed. Please do **NOT** publish your solution on a publicly available
-   location (such as a public GitHub repository, your personal website, _et
-   cetera_).
+## Third-party libraries
 
-This process closely mimics our actual development and review cycle. We hope
-you enjoy it!
+Next to the classic React Native, Expo, Prettier and Lint libraries, I used:
+- `@expo/vector-icons` for icons as it is recommended by Expo
+- `dotenv` for loading environment variables
+- `nativewind` and `tailwind` for styling with Tailwind CSS
+- `jest` and `@testing-library/react-native` for unit tests
+- (not a library) [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification was used, it gives clear and simple way of writing commit messages
 
-_Thanks in advance for your time and interest in Mild Blue!_
+## Tests
 
-[wireframe-image]: https://imgur.com/Kja1rsy.png
+Unit tests were created with [Jest](https://jestjs.io/) and [React Native Testing Library](https://testing-library.com/docs/react-native-testing-library/intro/).
+
+The app was tested on physical iPhone 13 mini and Google Pixel 4a device with Expo Go app. No simulators were used.
+
+## Visual
+
+First mock of the app was created with [Figma Make AI](https://www.figma.com/make/clVE1tIeOPLGwMCDseom5l/GIF-Viewer-App?node-id=0-1&t=c55LssaXkLUy0Vqt-1) to get better idea of the app.
+
+Then, I created the final design that match the assignment wireframes specification in [Figma](https://www.figma.com/design/Jvoj8GlMgHV3J2ibBtGHnF/GIF-app?node-id=0-1&t=PeC4ljahwYjudfQZ-1).
+
+![Figma Mock Design](assets/images/figma-design.png)
