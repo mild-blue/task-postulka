@@ -4,15 +4,13 @@
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
-    "reset-project": "node ./scripts/reset-project.js",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "expo lint",
     "format": "prettier --write .",
     "test": "jest",
-    "test:cov": "jest --coverage",
-    "deps:unused": "depcheck --skip-missing --ignores=typescript,expo-router,nativewind,react-native-reanimated,react-native-worklets,babel-plugin-module-resolver,jest-expo"
+    "test:cov": "jest --coverage"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",
